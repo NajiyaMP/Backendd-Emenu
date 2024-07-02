@@ -47,6 +47,7 @@ var dishesController = require('../Controller/dishesController')
 var maincategoriesController = require('../Controller/maincategoriesController');
 const isAuthenticated = require('../Middleware/authMiddleware');
 const adminController = require('../Controller/adminController');
+const settingsController = require('../Controller/settingsController');
 
 
 
@@ -54,12 +55,16 @@ const adminController = require('../Controller/adminController');
 
 
 // Route definitions
+
+//--login--
 router.post('/login', adminController.login);
 router.post('/logout', adminController.logout);
 // Protected route example
 router.get('/protected', isAuthenticated, (req, res) => {
     res.status(200).json({ message: 'You have access to this protected route' });
 });
+
+
 // --categories--
 
 router.post('/postcategories',categoriesController.postCategories);
@@ -69,7 +74,7 @@ router.get('/getcategoriesbyid/:id',categoriesController.getCategoriesById);
 router.put('/putcategories/:id',categoriesController.putCategoriesById);
 router.delete('/deletecategories/:id',categoriesController.deleteCategoriesById);
 
-
+//--dishes--
 
 // router.post('/postdishes', upload.single('image'),dishesController.postDishes);
 router.post('/postdishes', upload.array('image'), dishesController.postDishes);
@@ -80,12 +85,19 @@ router.put('/putdishes/:id', upload.array('image'), dishesController.putDishesBy
 router.delete('/deletedishes/:id',dishesController.deleteDishesById);
 
 
-//Main categoies
+//--Main categoies--
 
 router.post('/postmaincategories', maincategoriesController.postMaincategories);
 router.get('/getmaincategories', maincategoriesController.getMaincategories);
 router.get('/getmaincategoriesbyid/:id', maincategoriesController.getMaincategoriesById);
 router.put('/putmaincategories/:id', maincategoriesController.putMaincategoriesById);
 router.delete('/deletemaincategories/:id', maincategoriesController.deleteMaincategoriesById);
+
+//--profile--
+router.post('/postsettings', upload.array('image'), settingsController.postSettings);
+router.get('/getsettings', settingsController.getSettings);
+router.get('/getsettings/:id', settingsController.getSettingsById);
+router.put('/putsettings/:id', upload.array('image'), settingsController.putSettingsById);
+router.delete('/deletesettings/:id', settingsController.deleteSettingsById);
 
 module.exports = router
